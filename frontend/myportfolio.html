@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anjali Singla - Portfolio</title>
+  <style>
+    body.dark-mode {
+      --bg-color: #121212;
+      --text-color: #f4f4f4;
+      --card-bg: #1e1e1e;
+      --header-bg: #000;
+      --nav-bg: #222;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(-45deg, #fbc2eb, #a6c1ee, #fad0c4, #a1c4fd);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+      color: var(--text-color);
+      transition: background 0.5s ease, color 0.5s ease;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    header {
+      background: var(--header-bg);
+      color: #ffffff;
+      padding: 30px;
+      text-align: center;
+      background-color: #880e4f;
+    }
+
+    nav{
+      align-content:center;
+    }
+    nav ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      justify-content: space-around;
+      background: var(--nav-bg);
+      margin: 0;
+     
+    }
+
+    nav ul li {
+      margin: 0 15px;
+      padding: 10px;
+      border-radius: 5px;
+      border-color: #000;
+      background-color: #2e262a;
+      justify-content: space-between;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    nav ul li a:hover {
+      color: #ff9800;
+    }
+
+    section {
+      padding: 40px;
+      max-width: 90%;
+      margin: auto;
+      background-color: #22222232;
+    }
+
+    h2 {
+      color: #880e4f;
+      text-align: center;
+      margin-bottom: 20px;
+      background-color: #222;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: auto;
+    }
+
+    table, th, td {
+      border: 1px solid purple;
+      padding: 8px;
+      text-align: center;
+      font-size: 16px;
+    }
+
+    th {
+      background-color: purple;
+      color: white;
+    }
+
+    ul {
+      max-width: 600px;
+      margin: auto;
+      text-align: left;
+    }
+
+    .projects {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+    }
+
+    .card-image img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      transition: transform 0.5s ease, filter 0.5s ease;
+    }
+
+    .card:hover .card-image img {
+      transform: scale(1.1);
+      filter: brightness(80%);
+    }
+
+    .card-content {
+      padding: 15px;
+    }
+
+    footer {
+      background: var(--header-bg);
+      color: #fff;
+      text-align: center;
+      padding: 15px;
+      margin-top: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    footer::before {
+      content: "";
+      position: absolute;
+      top: -50px;
+      left: 0;
+      width: 200%;
+      height: 150px;
+      background: url('wave.svg') repeat-x;
+      background-size: cover;
+      animation: waveMove 10s linear infinite;
+    }
+
+    @keyframes waveMove {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    button {
+      background: purple;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #880e4f;
+    }
+
+    .toggle-container {
+      text-align: center;
+      margin: 20px;
+    }
+
+    form {
+      max-width: 500px;
+      margin: auto;
+      text-align: left;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      margin: 5px 0;
+      border: 1px solid #000000;
+      border-radius: 15px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Welcome to My Portfolio</h1>
+    <p>Hello! My name is <b>Anjali Singla</b>.  I am a final year BCA student who is passionate to learn more about Full Stack Developer.</p>
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="toggle-container">
+    <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
+  </div>
+
+  <section id="about">
+    <h2>About Me</h2>
+    <p>
+      I am a final year BCA student who is passionate to learn more about Full Stack Developer with a strong interest in building dynamic and user-friendly web applications.
+      I enjoy working on both front-end and back-end development, creating responsive designs, and developing efficient server-side solutions.
+      I am always eager to learn new technologies and improve my skills to build complete and impactful web solutions.
+    </p>
+  </section>
+
+  <section id="education">
+    <h2>Educational Qualifications</h2>
+    <table>
+      <tr>
+        <th>Qualification</th>
+        <th>Institution</th>
+        <th>Year</th>
+      </tr>
+      <tr>
+        <td>School</td>
+        <td>Manav Mangal Smart School</td>
+        <td>2022</td>
+      </tr>
+      <tr>
+        <td>School</td>
+        <td>Lawerance Public Sn. Sec. School</td>
+        <td>2024</td>
+      </tr>
+      <tr>
+        <td>Bachelor's Degree</td>
+        <td>Gian Jyoti Institute of Management and Technology</td>
+        <td>2027</td>
+      </tr>
+    </table>
+  </section>
+
+  <section id="skills">
+    <h2>Skills</h2>
+    <ul>
+      <li>HTML, CSS, JavaScript</li>
+      <li>Python, C, C++</li>
+      <li>WordPress</li>
+      <li>MS Office</li>
+      <li>Adobe Photoshop, Canva</li>
+      <li>AI Basics</li>
+      <li>Android Application Development Basics</li>
+      <li>Communication Skills</li>
+    </ul>
+  </section>
+
+  <section id="projects">
+    <h2>Completed Projects</h2>
+    <div class="projects">
+      <div class="card">
+        <div class="card-image">
+          <img src="assets/simple_calculator.png" alt="Calculator Project">
+        </div>
+        <div class="card-content">
+          <h3>Simple Calculator</h3>
+          <p>A basic calculator built with HTML, CSS, and JavaScript.</p>
+          <button onclick="showAlert('Simple Calculator')">View Project</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-image">
+          <img src="assets/SMS.png" alt="Student Management System">
+        </div>
+        <div class="card-content">
+          <h3>Student Management System</h3>
+          <p>A system to manage student records and performance.</p>
+          <button onclick="showAlert('Student Management System')">View Project</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-image">
+          <img src="assets/Screenshot 2026-06-28 195858.png" alt="Skill Swap Platform">
+        </div>
+        <div class="card-content">
+          <h3>Skill Swap Platform</h3>
+          <p>A website that allows users to exchange skills and learn from each other.</p>
+          <button onclick="showAlert('Skill Swap Platform')">View Project</button>
+        </div>
+      </div>
+      </div>
+      <h2>Ongoing Projects</h2>
+      <div class="projects">
+          <div class="card">
+        <div class="card-image">
+          <img src="assets/skillup.png" alt="SkillUp Project">
+        </div>
+        <div class="card-content">
+          <h3>SkillUp</h3>
+          <p>An innovative platform currently in development to enhance learning opportunities.</p>
+          <button onclick="showAlert('SkillUp')">View Project</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-image">
+          <img src="assets/AI_BOT.png" alt="AI Bot for Trading">
+        </div>
+        <div class="card-content">
+          <h3>AI Bot for Trading</h3>
+          <p>A simple AI-powered bot designed to assist with trading decisions.</p>
+          <button onclick="showAlert('AI Bot for Trading')">View Project</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2>Contact Me</h2>
+    <p>Email: anjalisingla.gjimt@gmail.com</p>
+    <p>Phone: 9779******</p>
+  </section>
+  <section>
+    <h2>Send Me a Message</h2>
+    <form>
+      <label>Name:</label><br>
+      <input type="text" name="name"><br><br>
+      <label>Email:</label><br>
+      <input type="email" name="email"><br><br>
+      <label>Message:</label><br>
+      <textarea rows="4" cols="30"></textarea><br><br>
+      <input type="submit" value="Submit">
+    </form>
+  </section>
+
+  <footer>
+    <p>&copy; 2026 Anjali Singla. All rights reserved.</p>
+  </footer>
+
+  <script>
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark-mode");
+    }
+    function showAlert(projectName) {
+      alert("You clicked on " + projectName + "!");
+    }
+  </script>
+</body>
+</html>
