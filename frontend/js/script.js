@@ -88,6 +88,7 @@ document.getElementById("theme").addEventListener("click", function () {
     isDarkMode = !isDarkMode;
     localStorage.setItem("darkMode", isDarkMode);
     applyTheme(isDarkMode);
+    showToast(isDarkMode ? "Dark mode enabled" : "Light mode enabled", "info");
 });
 function renderDashboard() {
     const nameEl = document.getElementById("studentNameDisplay");
@@ -121,28 +122,28 @@ function validateForm() {
     const course = document.getElementById("course").value;
 
     if (name === "") {
-        alert("Name is required");
+        showToast("Name is required", "danger");
         return;
     }
     if (age === "" || Number(age) < 18) {
-        alert("You must be 18 or older");
+        showToast("You must be 18 or older", "danger");
         return;
     }
     if (email === "" || !email.includes("@")) {
-        alert("Valid Email is Required!");
+        showToast("Valid Email is Required!", "danger");
         return;
     }
     if (course === "") {
-        alert("Select a course.");
+        showToast("Select a course.", "danger");
         return;
     }
 
     if (editIndex === null) {
         registerStudent(name, age, email, course);
-        alert("Form submitted successfully!");
+        showToast("Form submitted successfully!", "success");
     } else {
         updateStudent(editIndex, name, age, email, course);
-        alert("Student updated successfully!");
+        showToast("Student updated successfully!","success");
     }
 
     resetForm();
@@ -240,21 +241,6 @@ function searchstudents() {
     });
 }
 
- function showToast(message, type = "success") {
- // 1. Create the toast element
- const toast = document.createElement("div");
- // 2. Style it with Bootstrap alert classes
- toast.className =
- `alert alert-${type} alert-dismissible`;
- // 3. Set the message
- toast.innerHTML = message;
- // 4. Insert into the container
- document.getElementById("toastContainer").appendChild(toast);
- // 5. Auto-remove after 3 seconds
- setTimeout(() => {
- toast.remove();
- }, 3000);
- }
 
 searchstudents();
 renderCatalog();
