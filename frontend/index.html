@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
     <title>SkillHub LMS</title>
 </head>
+
 <body>
     <header>
         <h1>SkillHub LMS</h1>
@@ -66,19 +68,26 @@
         </div>
         <div class="lead mt-3">
             <p>SkillHub LMS helps students learn modern web development through practical projects.
-            We provide a comprehensive learning experience with hands-on projects and real-world applications.
-            Our courses are designed to equip students with the skills needed to excel in the tech industry.
-            Join us today and start your journey to becoming a full stack developer!</p>
-            <p>SkillHub LMS helps students learn modern web development through practical projects.
-            We provide a comprehensive learning experience with hands-on projects and real-world applications.
-            Our courses are designed to equip students with the skills needed to excel in the tech industry.
-            Join us today and start your journey to becoming a full stack developer!</p>
+                We provide a comprehensive learning experience with hands-on projects and real-world applications.
+                Our courses are designed to equip students with the skills needed to excel in the tech industry.
+                Join us today and start your journey to becoming a full stack developer!</p>
+            <p>At SkillHub, we believe that learning should be practical, engaging, and future-ready.
+                Our Learning Management System is designed to empower students, professionals, and lifelong learners
+                with the most in-demand
+                technical skills.</p>
+            <p>We specialize in delivering structured, hands-on courses in:<b>MongoDB</b> – Master modern database
+                management.<b>HTML & CSS</b> – Build beautiful, responsive web pages.<b>JavaScript</b> – Add
+                interactivity and logic to your applications.
+                <b>Bootstrap</b> – Create sleek, mobile-first designs with ease.<b>React.js</b> – Develop dynamic,
+                component-based user interfaces.
+                <b>Node.js</b> – Build scalable, high-performance backend systems.
+            </p>
         </div>
     </section>
     <section class="courses py-5">
         <div class="container">
             <h2 class="text-center mb-4" id="courses">Our Courses</h2>
-            <div class="row g-4">
+            <div class="row g-4" id="courseCatalog">
                 <div class="col-md-4">
                     <div class="card h-100">
                         <div class="card-body">
@@ -100,7 +109,7 @@
                 <div class="col-md-4">
                     <div class="card h-100">
                         <div class="card-body">
-                            <h4 class="card-title">React</h4>
+                            <h4 class="card-title">Node JS</h4>
                             <p class="card-text">Create modern web applications.</p>
                             <a class="btn btn-danger">Learn More</a>
                         </div>
@@ -216,59 +225,47 @@
             </div>
     </section>
     <br>
-    <section class="py-5 bg-gradient text-dark">
-        <div class="container">
-            <h2 class="text-center mb-5">Student Dashboard</h2>
-            <div class="row g-4">
-                <div class="col-md-6">
-                    <div class="shadow h-100 bg-dark">
-                        <div class="card-body bg-light text-dark">
-                            <h6>Name</h6>
-                            <h5 id="name"></h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="shadow h-100 bg-dark">
-                        <div class="card-body bg-light text-dark">
-                            <h6>Today</h6>
-                            <h5 id="date"></h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="bg-dark">
-                        <div class="card-body bg-light text-dark">
-                            <h6>Courses Enrolled</h6>
-                            <h5 id="courses">6</h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="bg-dark">
-                        <div class="card-body bg-light text-dark">
-                            <h5><button id="theme" class="btn btn-outline-dark">Change Theme </button></h5>
-                        </div>
-                    </div>
-                </div>
+    <section class="dashboard">
+        <h2>Student Dashboard</h2>
+        <div class="dashboard-container">
+            <div class="dashboard-card">
+                <h6>Current Student</h6>
+                <h5 id="studentNameDisplay">Guest</h5>
+                <small id="studentEmailDisplay"></small>
             </div>
-            <h3>Available Courses:<span id="count">6</span></h3>
-            <button id="addCourse" class="btn btn-outline-dark btn-lg">Add Course</button>
+            <div class="dashboard-card">
+                <h6>Today</h6>
+                <h5 id="date"></h5>
+            </div>
+            <div class="dashboard-card">
+                <h6>Courses Enrolled</h6>
+                <h5 id="enrolledCourses">0</h5>
+            </div>
+            <div class="dashboard-card">
+                <h6>Total Students Registered</h6>
+                <h5 id="totalStudents">0</h5>
+            </div>
+            <div class="dashboard-card">
+                <h6>Available Courses</h6>
+                <h5><span id="count">0</span></h5>
+            </div>
+            <div class="dashboard-card">
+                <h6>Preferences</h6>
+                <button id="theme" class="btn">Toggle Dark Mode</button>
+            </div>
+        </div>
+        <div class="dashboard-actions">
+            <button id="addCourse" class="btn">Add Course to Catalog</button>
+            <p id="dashboardHint" class="dashboard-hint"></p>
+        </div>
     </section>
     <h2 id="contact">Contact us</h2>
     <p>Email: skillhub@gmail.com</p>
-    <label class="bs-label">Course</label>
-    <select id="course" class="form-select">
-        <option>Select Course</option>
-        <option>MERN Stack</option>
-        <option>Java</option>
-        <option>Python</option>
-    </select>
     <section class="container mt-5">
         <h2 class="text-center">
             Student Registration
         </h2>
-        <form id="registrationForm">
+        <form id="registrationForm" class="mt-4">
             <div class="mb-3">
                 <label>Name</label>
                 <input type="text" id="name" class="form-control">
@@ -281,15 +278,43 @@
                 <label>Age</label>
                 <input type="number" id="age" class="form-control">
             </div>
-            <div class="mb-3">
-               <button type="button"class="btn btn-primary"onclick="validateForm()">Register</button>
+            <label class="bs-label">Course</label>
+            <select id="course" class="form-select">
+                <option value="">Select Course</option>
+                <option>MERN Stack</option>
+                <option>Java</option>
+                <option>Python</option>
+            </select>
+            <div class="mb-3 mt-3">
+
+                <button type="button" class="btn btn-primary" onclick="validateForm()" id="submit">Register</button>
+                <button type="button" class="btn btn-secondary d-none" id="cancelEdit"
+                    onclick="cancelEditStudent()">Cancel</button>
             </div>
         </form>
+        <h4 class="mt-5">Registered Students</h4>
+        <table class="table table-bordered">
+            <thead>
+                <input type="text" id="searchBox" class="search-input" placeholder="Search by name..."
+                    oninput="searchstudents()">
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Age</th>
+                    <th>Course</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="studentsTableBody">
+            </tbody>
+        </table>
     </section>
-           
-            <script rel="script" src="js/script.js"></script>
+    <div id="toastContainer" style="position:fixed;bottom:20px; right:20px;z-index:9999"></div>
+    <script rel="script" src="js/script.js"></script>
+    <script rel="script" src="./js/utils.js"></script>
     <footer>
         <p>Copyright 2026</p>
     </footer>
 </body>
+
 </html>

@@ -173,3 +173,100 @@ nav a:hover {
     .about {margin: 15px;padding: 20px;}
     footer {font-size: 14px;}
 }
+.dashboard {
+    padding: 60px;
+    text-align: center;
+    background: #eef4ff;
+}
+
+.dashboard-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.dashboard-card {
+    width: 30%;
+    padding: 25px;
+    background: white;
+    border-radius: 15px;
+    border: 2px solid #000000;
+    box-shadow: 0 0 15px rgba(0, 0, 0, .15);
+    transition: .7s;
+}
+
+.dashboard-card:hover {
+    transform: scale(0.9);
+}
+
+.dashboard-card h6 {
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: .05em;
+    color: #020202;
+    margin-bottom: 10px;
+}
+
+.dashboard-card h5 {
+    color: #2563eb;
+    font-weight: 700;
+    font-size: 22px;
+    margin: 0;
+}
+
+.dashboard-card small {
+    display: block;
+    margin-top: 6px;
+}
+
+.dashboard-actions {
+    margin-top: 30px;
+}
+
+.dashboard-actions .btn {
+    margin: 0 8px;
+}
+
+.dashboard-hint {
+    margin-top: 15px;
+    color: #555;
+    font-size: 14px;
+}
+
+/* Dark mode reuses the site's own dark navy palette (header/footer/cta)
+   instead of a generic black, so toggling it still looks like this site. */
+body.dark-mode {
+    background-color: #0e131b;
+    color: #f1f1f1;
+}
+
+body.dark-mode .dashboard,
+body.dark-mode .features,
+body.dark-mode .testimonial {
+    background: #171d29;
+}
+
+body.dark-mode .dashboard-card,
+body.dark-mode .feature,
+body.dark-mode .student,
+body.dark-mode .card {
+    background: #1e293b;
+    color: #f1f1f1;
+    border-color: #2563eb;
+}
+
+body.dark-mode .dashboard-card h6,
+body.dark-mode .dashboard-hint {
+    color: #9fb0c9;
+}
+
+body.dark-mode .btn {
+    background: #1e293b;
+    color: white;
+}
+
+@media(max-width:786px) {
+    .dashboard {padding: 30px;}
+    .dashboard-card {width: 100%;}
+}
