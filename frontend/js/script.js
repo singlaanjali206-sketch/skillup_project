@@ -1,248 +1,163 @@
-let btn = document.getElementById("getstarted");
-btn.addEventListener("click", function () { alert("You are now redirected to the login page"); });
+const api = "/api";
+let students = [];
+let catalog = [];
+let editId = null;
 
-let themeBtn = document.getElementById("themeBtn");
-themeBtn.addEventListener("click", function () {
-    document.body.style.background = "linear-gradient(to right, #458c9c, #211e1e88)";
-});
+const $ = (id) => document.getElementById(id);
 
-document.getElementById("date").innerHTML = new Date().toDateString();
+async function request(url, options = {}) {
+    const response = await fetch(`${api}${url}`, {
+        headers: { "Content-Type": "application/json" },
+        ...options
+    });
+    if (!response.ok) {
+        const body = await response.json().catch(() => ({}));
+        throw new Error(body.message || "Something went wrong. Please try again.");
+    }
+    return response.status === 204 ? null : response.json();
+}
 
-let students = JSON.parse(localStorage.getItem("students")) || [];
-let editIndex = null;
-
-const DEFAULT_COURSES = [
-    { name: "HTML & CSS", desc: "Build beautiful, responsive web pages.", badge: "btn-success" },
-    { name: "JavaScript", desc: "Add interactivity and logic to your applications.", badge: "btn-warning" },
-    { name: "Node JS", desc: "Build scalable, high-performance backend systems.", badge: "btn-danger" },
-    { name: "Mongo DB", desc: "Master modern database management.", badge: "btn-success" },
-    { name: "Bootstrap", desc: "Create sleek, mobile-first designs with ease.", badge: "btn-warning" },
-    { name: "React JS", desc: "Develop dynamic, component-based user interfaces.", badge: "btn-danger" }
-];
-const BADGE_CYCLE = ["btn-success", "btn-warning", "btn-danger"];
-
-let catalog = JSON.parse(localStorage.getItem("catalog")) || DEFAULT_COURSES;
-
-function saveCatalog() {
-    localStorage.setItem("catalog", JSON.stringify(catalog));
+function showToast(message, type = "info") {
+    const toast = document.createElement("div");
+    toast.className = `alert alert-${type} shadow`;
+    toast.textContent = message;
+    $("toastContainer").appendChild(toast);
+    setTimeout(() => toast.remove(), 3500);
 }
 
 function renderCatalog() {
-    const grid = document.getElementById("courseCatalog");
+    const grid = $("courseCatalog");
     grid.innerHTML = "";
-    catalog.forEach(function (courseItem) {
+    catalog.forEach((course) => {
         const col = document.createElement("div");
         col.className = "col-md-4";
-        col.innerHTML =
-            '<div class="card h-100"><div class="card-body">' +
-            '<h4 class="card-title"></h4>' +
-            '<p class="card-text"></p>' +
-            '<a class="btn ' + courseItem.badge + '">Learn More</a>' +
-            '</div></div>';
-        col.querySelector(".card-title").textContent = courseItem.name;
-        col.querySelector(".card-text").textContent = courseItem.desc;
+        col.innerHTML = `<div class="card h-100"><div class="card-body"><h4 class="card-title"></h4><p class="card-text"></p><button type="button" class="btn ${course.badge}">Learn More</button></div></div>`;
+        col.querySelector(".card-title").textContent = course.name;
+        col.querySelector(".card-text").textContent = course.desc;
+        col.querySelector("button").addEventListener("click", () => learnMoreAboutCourse(course.name));
         grid.appendChild(col);
     });
-    const select = document.getElementById("course");
-    const currentValue = select.value;
+    const select = $("course");
+    const selected = select.value;
     select.innerHTML = '<option value="">Select Course</option>';
-    catalog.forEach(function (courseItem) {
-        const option = document.createElement("option");
-        option.value = courseItem.name;
-        option.textContent = courseItem.name;
-        select.appendChild(option);
-    });
-    if (catalog.some(function (c) { return c.name === currentValue; })) {
-        select.value = currentValue;
-    }
-
-    document.getElementById("count").textContent = catalog.length;
-}
-
-document.getElementById("addCourse").addEventListener("click", function () {
-    const name = prompt("New course name:");
-    if (!name || !name.trim()) {
-        return;
-    }
-    const trimmed = name.trim();
-    if (catalog.some(function (c) { return c.name.toLowerCase() === trimmed.toLowerCase(); })) {
-        alert(trimmed + " is already in the catalog.");
-        return;
-    }
-    catalog.push({
-        name: trimmed,
-        desc: "Newly added course.",
-        badge: BADGE_CYCLE[catalog.length % BADGE_CYCLE.length]
-    });
-    saveCatalog();
-    renderCatalog();
-    document.getElementById("dashboardHint").textContent = trimmed + " added to the catalog.";
-});
-function applyTheme(isDark) {
-    document.body.classList.toggle("dark-mode", isDark);
-    document.getElementById("theme").textContent = isDark ? "Toggle Light Mode" : "Toggle Dark Mode";
-}
-let isDarkMode = localStorage.getItem("darkMode") === "true";
-applyTheme(isDarkMode);
-document.getElementById("theme").addEventListener("click", function () {
-    isDarkMode = !isDarkMode;
-    localStorage.setItem("darkMode", isDarkMode);
-    applyTheme(isDarkMode);
-    showToast(isDarkMode ? "Dark mode enabled" : "Light mode enabled", "info");
-});
-function renderDashboard() {
-    const nameEl = document.getElementById("studentNameDisplay");
-    const emailEl = document.getElementById("studentEmailDisplay");
-    const enrolledEl = document.getElementById("enrolledCourses");
-    const totalEl = document.getElementById("totalStudents");
-
-    if (students.length === 0) {
-        nameEl.textContent = "Guest";
-        emailEl.textContent = "Register below to see your dashboard";
-        enrolledEl.textContent = "0";
-        totalEl.textContent = "0";
-        return;
-    }
-
-    const current = students[students.length - 1];
-    nameEl.textContent = current.name;
-    emailEl.textContent = current.email;
-
-    const enrolledForCurrent = students.filter(function (s) { return s.email === current.email; }).length;
-    enrolledEl.textContent = enrolledForCurrent;
-
-    const distinctEmails = new Set(students.map(function (s) { return s.email; }));
-    totalEl.textContent = distinctEmails.size;
-}
-
-function validateForm() {
-    const name = document.getElementById("name").value.trim();
-    const age = document.getElementById("age").value;
-    const email = document.getElementById("email").value.trim();
-    const course = document.getElementById("course").value;
-
-    if (name === "") {
-        showToast("Name is required", "danger");
-        return;
-    }
-    if (age === "" || Number(age) < 18) {
-        showToast("You must be 18 or older", "danger");
-        return;
-    }
-    if (email === "" || !email.includes("@")) {
-        showToast("Valid Email is Required!", "danger");
-        return;
-    }
-    if (course === "") {
-        showToast("Select a course.", "danger");
-        return;
-    }
-
-    if (editIndex === null) {
-        registerStudent(name, age, email, course);
-        showToast("Form submitted successfully!", "success");
-    } else {
-        updateStudent(editIndex, name, age, email, course);
-        showToast("Student updated successfully!","success");
-    }
-
-    resetForm();
-}
-
-function registerStudent(name, age, email, course) {
-    const student = { name, age, email, course };
-    students.push(student);
-    saveStudents();
-    renderStudents();
-    renderDashboard();
-}
-
-function updateStudent(index, name, age, email, course) {
-    students[index] = { name, age, email, course };
-    saveStudents();
-    renderStudents();
-    renderDashboard();
-}
-
-function deleteStudent(index) {
-    students.splice(index, 1);
-    saveStudents();
-    renderStudents();
-    renderDashboard();
-    if (editIndex === index) {
-        resetForm();
-    }
-}
-
-function saveStudents() {
-    localStorage.setItem("students", JSON.stringify(students));
-}
-function editStudent(index) {
-    editIndex = index;
-    document.getElementById("name").value = students[index].name;
-    document.getElementById("age").value = students[index].age;
-    document.getElementById("email").value = students[index].email;
-    document.getElementById("course").value = students[index].course;
-
-    document.getElementById("submit").textContent = "Update";
-    document.getElementById("cancelEdit").classList.remove("d-none");
-}
-
-function cancelEditStudent() {
-    resetForm();
-}
-
-function resetForm() {
-    editIndex = null;
-    document.getElementById("registrationForm").reset();
-    document.getElementById("submit").textContent = "Register";
-    document.getElementById("cancelEdit").classList.add("d-none");
+    catalog.forEach((course) => select.add(new Option(course.name, course.name)));
+    select.value = selected;
+    $("count").textContent = catalog.length;
 }
 
 function renderStudents() {
-    const tbody = document.getElementById("studentsTableBody");
+    const search = $("searchBox").value.trim().toLowerCase();
+    const filtered = students.filter((student) => student.name.toLowerCase().includes(search));
+    const tbody = $("studentsTableBody");
     tbody.innerHTML = "";
-
-    students.forEach(function (student, index) {
+    filtered.forEach((student) => {
         const row = document.createElement("tr");
-        row.innerHTML =
-            "<td></td><td></td><td></td><td></td><td></td>";
-
-        row.children[0].textContent = student.name;
-        row.children[1].textContent = student.email;
-        row.children[2].textContent = student.age;
-        row.children[3].textContent = student.course;
-
-        const actionsCell = row.children[4];
-
-        const editBtn = document.createElement("button");
-        editBtn.className = "btn btn-sm btn-outline-primary me-2";
-        editBtn.textContent = "Edit";
-        editBtn.addEventListener("click", function () { editStudent(index); });
-
-        const deleteBtn = document.createElement("button");
-        deleteBtn.className = "btn btn-sm btn-outline-danger";
-        deleteBtn.textContent = "Delete";
-        deleteBtn.addEventListener("click", function () { deleteStudent(index); });
-
-        actionsCell.appendChild(editBtn);
-        actionsCell.appendChild(deleteBtn);
+        [student.name, student.email, student.age, student.course].forEach((value) => {
+            const cell = document.createElement("td");
+            cell.textContent = value;
+            row.appendChild(cell);
+        });
+        const actions = document.createElement("td");
+        actions.innerHTML = '<button class="btn btn-sm btn-outline-primary me-2">Edit</button><button class="btn btn-sm btn-outline-danger">Delete</button>';
+        actions.children[0].onclick = () => editStudent(student.id);
+        actions.children[1].onclick = () => deleteStudent(student.id);
+        row.appendChild(actions);
         tbody.appendChild(row);
     });
 }
-function searchstudents() {
-    document.getElementById("searchBox").addEventListener("input", function () {
-        let keyword = this.value.toLowerCase();
-        let filtered = students.filter(function (s) {
-            return
-            s.name.toLowerCase().includes(keyword);
-        });
-        displayStudents(filtered);
-    });
+
+function renderDashboard() {
+    const current = students.at(-1);
+    $("studentNameDisplay").textContent = current ? current.name : "Guest";
+    $("studentEmailDisplay").textContent = current ? current.email : "Register below to see your dashboard";
+    $("enrolledCourses").textContent = current ? students.filter((student) => student.email === current.email).length : 0;
+    $("totalStudents").textContent = new Set(students.map((student) => student.email)).size;
 }
 
+function resetForm() {
+    editId = null;
+    $("registrationForm").reset();
+    $("submit").textContent = "Register";
+    $("cancelEdit").classList.add("d-none");
+}
 
-searchstudents();
-renderCatalog();
-renderStudents();
-renderDashboard();
+function editStudent(id) {
+    const student = students.find((item) => item.id === id);
+    if (!student) return;
+    editId = id;
+    ["name", "email", "age", "course"].forEach((field) => $(field).value = student[field]);
+    $("submit").textContent = "Update";
+    $("cancelEdit").classList.remove("d-none");
+    $("register").scrollIntoView({ behavior: "smooth" });
+}
+
+async function deleteStudent(id) {
+    if (!confirm("Delete this student registration?")) return;
+    try {
+        await request(`/students/${id}`, { method: "DELETE" });
+        students = students.filter((student) => student.id !== id);
+        renderStudents(); renderDashboard();
+        if (editId === id) resetForm();
+        showToast("Student deleted.", "success");
+    } catch (error) { showToast(error.message, "danger"); }
+}
+
+async function validateForm() {
+    const student = Object.fromEntries(["name", "email", "age", "course"].map((field) => [field, $(field).value.trim()]));
+    if (!student.name || !/^\S+@\S+\.\S+$/.test(student.email) || Number(student.age) < 18 || !student.course) {
+        showToast("Enter a name, valid email, age 18 or older, and course.", "danger");
+        return;
+    }
+    try {
+        const saved = await request(editId ? `/students/${editId}` : "/students", { method: editId ? "PUT" : "POST", body: JSON.stringify(student) });
+        students = editId ? students.map((item) => item.id === saved.id ? saved : item) : [...students, saved];
+        renderStudents(); renderDashboard(); resetForm();
+        showToast(editId ? "Student updated." : "Registration saved.", "success");
+    } catch (error) { showToast(error.message, "danger"); }
+}
+
+async function addCourse() {
+    const name = prompt("New course name:");
+    if (!name?.trim()) return;
+    try {
+        catalog.push(await request("/courses", { method: "POST", body: JSON.stringify({ name }) }));
+        renderCatalog();
+        $("dashboardHint").textContent = `${name.trim()} added to the catalog.`;
+    } catch (error) { showToast(error.message, "danger"); }
+}
+
+function applyTheme(isDark) {
+    document.body.classList.toggle("dark-mode", isDark);
+    $("theme").textContent = isDark ? "Toggle Light Mode" : "Toggle Dark Mode";
+    $("themebtn").textContent = isDark ? "Light Mode" : "Dark Mode";
+}
+
+function learnMoreAboutCourse(courseName) {
+    $("course").value = courseName;
+    $("register").scrollIntoView({ behavior: "smooth" });
+    showToast(`${courseName} selected. Complete the form to register.`, "info");
+}
+
+async function initialise() {
+    $("date").textContent = new Date().toDateString();
+    try {
+        [students, catalog] = await Promise.all([request("/students"), request("/courses")]);
+        renderCatalog(); renderStudents(); renderDashboard();
+    } catch (error) {
+        showToast("Could not connect to SkillHub. Start the backend and open http://localhost:3000.", "danger");
+    }
+}
+
+$("getstarted").onclick = () => $("register").scrollIntoView({ behavior: "smooth" });
+$("learnmore").onclick = () => $("courses").scrollIntoView({ behavior: "smooth" });
+$("addCourse").onclick = addCourse;
+$("searchBox").oninput = renderStudents;
+function toggleTheme() {
+    const next = !document.body.classList.contains("dark-mode");
+    localStorage.setItem("darkMode", next);
+    applyTheme(next);
+}
+$("theme").onclick = toggleTheme;
+$("themebtn").onclick = toggleTheme;
+applyTheme(localStorage.getItem("darkMode") === "true");
+initialise();

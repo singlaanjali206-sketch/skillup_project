@@ -1,22 +1,23 @@
 [
   {
+    "id": "85f7fa1f-b11e-46a9-b6fa-7735a7f8a96e",
     "name": "Anjali Singla",
-    "course": "MERN"
+    "email": "anjali@gmail.com",
+    "age": 20,
+    "course": "Mongo DB"
   },
   {
-    "name": "Anjali Singla",
-    "course": "HTML"
-  },
-  {
-    "name": "Anjali Singla",
-    "course": "MERN"
-  },
-  {
-    "name": "Anjali Singla",
-    "course": "HTML"
-  },
-  {
+    "id": "ebcc8fd7-5ec7-4d0d-854a-4bbe2fc7e5b2",
     "name": "Priya Singla",
-    "course": "JavaScript"
+    "email": "priya@gmail.com",
+    "age": 21,
+    "course": "HTML & CSS"
+  },
+  {
+    "id": "fa5c1781-c113-4379-88e0-d05cd1b6d8e2",
+    "name": "Jaskirat Kaur",
+    "email": "jaskirat@gmail.com",
+    "age": 20,
+    "course": "React JS"
   }
 ]
