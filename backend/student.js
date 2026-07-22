@@ -18,8 +18,6 @@ function viewStudents() {
   console.table(students);
 }
 
-students = addStudent("Priya Singla","JavaScript");
-
 fs.writeFileSync("students.json", JSON.stringify(students, null, 2));
 
 console.log("Students saved successfully!");

@@ -35,7 +35,10 @@
                     </li>
                 </ul>
             </div>
-            <button id="themebtn" class="btn btn-outline-light text-light">Theme</button>
+            <div class="d-flex gap-2 ms-2">
+                <button id="authButton" class="btn btn-outline-light text-light">Admin Sign In</button>
+                <button id="themebtn" class="btn btn-outline-light text-light">Theme</button>
+            </div>
         </div>
     </nav>
     <section class="hero-section bg-dark text-white py-5">
@@ -140,6 +143,45 @@
                             <p class="card-text">UI library.</p>
                             <a class="btn btn-danger">Learn More</a>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="course-manager mt-5" id="courseManager">
+                <div>
+                    <p class="eyebrow mb-1">Course management</p>
+                    <h3 id="courseFormTitle">Create a new course</h3>
+                    <p class="mb-0">Add a course to the catalogue and registration form.</p>
+                </div>
+                <form id="courseForm" class="course-form">
+                    <div>
+                        <label for="courseName">Course name</label>
+                        <input id="courseName" class="form-control" type="text" placeholder="e.g. UI/UX Design" required>
+                    </div>
+                    <div>
+                        <label for="courseDescription">Short description</label>
+                        <input id="courseDescription" class="form-control" type="text" placeholder="What will learners gain?" required>
+                    </div>
+                    <div class="course-form-actions">
+                        <button type="submit" id="saveCourse" class="btn btn-primary">Add Course</button>
+                        <button type="button" id="cancelCourseEdit" class="btn btn-outline-secondary d-none">Cancel</button>
+                    </div>
+                </form>
+            </div>
+            <div id="courseDetailsModal" class="course-modal" role="dialog" aria-modal="true" aria-labelledby="courseModalTitle" aria-hidden="true">
+                <div class="course-modal__backdrop" data-close-course-modal></div>
+                <div class="course-modal__content" role="document">
+                    <button type="button" class="course-modal__close" aria-label="Close course details" data-close-course-modal>&times;</button>
+                    <p class="eyebrow">Course overview</p>
+                    <h3 id="courseModalTitle"></h3>
+                    <p id="courseModalDescription" class="course-modal__description"></p>
+                    <div class="course-modal__info">
+                        <div><span>Learning style</span><strong>Practical projects</strong></div>
+                        <div><span>Access</span><strong>Self-paced learning</strong></div>
+                        <div><span>Support</span><strong>Guided assistance</strong></div>
+                    </div>
+                    <div class="course-modal__actions">
+                        <button type="button" id="enrollCourseNow" class="btn btn-primary">Enroll Now</button>
+                        <button type="button" class="btn btn-outline-secondary" data-close-course-modal>Close</button>
                     </div>
                 </div>
             </div>
@@ -255,7 +297,7 @@
             </div>
         </div>
         <div class="dashboard-actions">
-            <button id="addCourse" class="btn">Add Course to Catalog</button>
+            <button id="addCourse" class="btn">Manage Courses</button>
             <p id="dashboardHint" class="dashboard-hint"></p>
         </div>
     </section>
@@ -308,6 +350,21 @@
         </table>
     </section>
     <div id="toastContainer" style="position:fixed;bottom:20px; right:20px;z-index:9999"></div>
+    <div id="authModal" class="course-modal" role="dialog" aria-modal="true" aria-labelledby="authModalTitle" aria-hidden="true">
+        <div class="course-modal__backdrop" data-close-auth-modal></div>
+        <div class="course-modal__content auth-modal-content" role="document">
+            <button type="button" class="course-modal__close" aria-label="Close sign-in dialog" data-close-auth-modal>&times;</button>
+            <p class="eyebrow">Administrator access</p>
+            <h3 id="authModalTitle">Sign in to manage SkillHub</h3>
+            <p class="course-modal__description">Adding, editing, or deleting students and courses requires administrator access.</p>
+            <form id="authForm" class="auth-form">
+                <div><label for="adminUsername">Username</label><input id="adminUsername" class="form-control" autocomplete="username" required></div>
+                <div><label for="adminPassword">Password</label><input id="adminPassword" class="form-control" type="password" autocomplete="current-password" required></div>
+                <button class="btn btn-primary" type="submit">Sign In</button>
+                <p id="authMessage" class="auth-message" aria-live="polite"></p>
+            </form>
+        </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/script.js"></script>
     <footer>

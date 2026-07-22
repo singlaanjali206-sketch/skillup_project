@@ -1,0 +1,38 @@
+[
+  {
+    "id": "b4b714a5-9706-4a4d-991e-e2ad9bd00096",
+    "name": "HTML & CSS",
+    "desc": "Build beautiful, responsive web pages.",
+    "badge": "btn-success"
+  },
+  {
+    "id": "fd559d8c-d96c-43ba-81ee-1dee3a7b272f",
+    "name": "JavaScript",
+    "desc": "Add interactivity and logic to your applications.",
+    "badge": "btn-warning"
+  },
+  {
+    "id": "0c0f9283-f8ff-40f6-b985-41158c7e905c",
+    "name": "Node JS",
+    "desc": "Build scalable, high-performance backend systems.",
+    "badge": "btn-danger"
+  },
+  {
+    "id": "6f12d38e-d8b7-468c-819f-fc66349c090f",
+    "name": "Mongo DB",
+    "desc": "Master modern database management.",
+    "badge": "btn-success"
+  },
+  {
+    "id": "b4e86f12-073f-4128-8fab-241d8732270c",
+    "name": "Bootstrap",
+    "desc": "Create sleek, mobile-first designs with ease.",
+    "badge": "btn-warning"
+  },
+  {
+    "id": "1e0ddfb5-591f-4505-970c-ce18b874bd93",
+    "name": "React JS",
+    "desc": "Develop dynamic, component-based user interfaces.",
+    "badge": "btn-danger"
+  }
+]

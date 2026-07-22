@@ -1,12 +1,5 @@
 [
   {
-    "id": "85f7fa1f-b11e-46a9-b6fa-7735a7f8a96e",
-    "name": "Anjali Singla",
-    "email": "anjali@gmail.com",
-    "age": 20,
-    "course": "Mongo DB"
-  },
-  {
     "id": "ebcc8fd7-5ec7-4d0d-854a-4bbe2fc7e5b2",
     "name": "Priya Singla",
     "email": "priya@gmail.com",
@@ -17,6 +10,13 @@
     "id": "fa5c1781-c113-4379-88e0-d05cd1b6d8e2",
     "name": "Jaskirat Kaur",
     "email": "jaskirat@gmail.com",
+    "age": 20,
+    "course": "React JS"
+  },
+  {
+    "id": "1d9d927e-6714-40cb-a35b-550d9069e67f",
+    "name": "Anjali Singla",
+    "email": "singlaanjali206@gmail.com",
     "age": 20,
     "course": "React JS"
   }

@@ -1,17 +1,26 @@
 const api = "/api";
+const authTokenKey = "skillhubAdminToken";
 let students = [];
 let catalog = [];
 let editId = null;
+let courseEditId = null;
+let adminToken = sessionStorage.getItem(authTokenKey) || "";
 
 const $ = (id) => document.getElementById(id);
 
 async function request(url, options = {}) {
+    const headers = { "Content-Type": "application/json", ...(adminToken ? { Authorization: `Bearer ${adminToken}` } : {}) };
     const response = await fetch(`${api}${url}`, {
-        headers: { "Content-Type": "application/json" },
-        ...options
+        ...options,
+        headers: { ...headers, ...options.headers }
     });
     if (!response.ok) {
         const body = await response.json().catch(() => ({}));
+        if (response.status === 401) {
+            adminToken = "";
+            sessionStorage.removeItem(authTokenKey);
+            renderAuthUI();
+        }
         throw new Error(body.message || "Something went wrong. Please try again.");
     }
     return response.status === 204 ? null : response.json();
@@ -25,16 +34,72 @@ function showToast(message, type = "info") {
     setTimeout(() => toast.remove(), 3500);
 }
 
+function isAuthenticated() {
+    return Boolean(adminToken);
+}
+
+function openAuthModal() {
+    $("authMessage").textContent = "";
+    $("authModal").classList.add("is-open");
+    $("authModal").setAttribute("aria-hidden", "false");
+    setTimeout(() => $("adminUsername").focus(), 0);
+}
+
+function closeAuthModal() {
+    $("authModal").classList.remove("is-open");
+    $("authModal").setAttribute("aria-hidden", "true");
+}
+
+function ensureAuth() {
+    if (isAuthenticated()) return true;
+    showToast("Please sign in as an administrator first.", "warning");
+    openAuthModal();
+    return false;
+}
+
+function renderAuthUI() {
+    $("authButton").textContent = isAuthenticated() ? "Sign Out" : "Admin Sign In";
+    $("courseManager").hidden = !isAuthenticated();
+    renderCatalog();
+    renderStudents();
+}
+
+async function submitAuth(event) {
+    event.preventDefault();
+    const username = $("adminUsername").value.trim();
+    const password = $("adminPassword").value;
+    try {
+        const data = await request("/auth/login", { method: "POST", body: JSON.stringify({ username, password }) });
+        adminToken = data.token;
+        sessionStorage.setItem(authTokenKey, adminToken);
+        $("authForm").reset();
+        closeAuthModal();
+        renderAuthUI();
+        showToast("Administrator access enabled.", "success");
+    } catch (error) { $("authMessage").textContent = error.message; }
+}
+
+async function toggleAuthentication() {
+    if (!isAuthenticated()) return openAuthModal();
+    try { await request("/auth/logout", { method: "POST" }); } catch { /* Local token should still be cleared. */ }
+    adminToken = "";
+    sessionStorage.removeItem(authTokenKey);
+    renderAuthUI();
+    showToast("Signed out.", "info");
+}
+
 function renderCatalog() {
     const grid = $("courseCatalog");
     grid.innerHTML = "";
     catalog.forEach((course) => {
         const col = document.createElement("div");
         col.className = "col-md-4";
-        col.innerHTML = `<div class="card h-100"><div class="card-body"><h4 class="card-title"></h4><p class="card-text"></p><button type="button" class="btn ${course.badge}">Learn More</button></div></div>`;
+        col.innerHTML = `<div class="card h-100"><div class="card-body"><h4 class="card-title"></h4><p class="card-text"></p><button type="button" class="btn ${course.badge}">Learn More</button><div class="course-card-actions ${isAuthenticated() ? "" : "d-none"}"><button type="button" class="btn btn-sm btn-outline-primary">Edit</button><button type="button" class="btn btn-sm btn-outline-danger">Delete</button></div></div></div>`;
         col.querySelector(".card-title").textContent = course.name;
         col.querySelector(".card-text").textContent = course.desc;
-        col.querySelector("button").addEventListener("click", () => learnMoreAboutCourse(course.name));
+        col.querySelector("button").addEventListener("click", () => showCourseDetails(course));
+        col.querySelectorAll(".course-card-actions button")[0].addEventListener("click", () => editCourse(course.id));
+        col.querySelectorAll(".course-card-actions button")[1].addEventListener("click", () => deleteCourse(course.id));
         grid.appendChild(col);
     });
     const select = $("course");
@@ -58,9 +123,13 @@ function renderStudents() {
             row.appendChild(cell);
         });
         const actions = document.createElement("td");
-        actions.innerHTML = '<button class="btn btn-sm btn-outline-primary me-2">Edit</button><button class="btn btn-sm btn-outline-danger">Delete</button>';
-        actions.children[0].onclick = () => editStudent(student.id);
-        actions.children[1].onclick = () => deleteStudent(student.id);
+        if (isAuthenticated()) {
+            actions.innerHTML = '<button class="btn btn-sm btn-outline-primary me-2">Edit</button><button class="btn btn-sm btn-outline-danger">Delete</button>';
+            actions.children[0].onclick = () => editStudent(student.id);
+            actions.children[1].onclick = () => deleteStudent(student.id);
+        } else {
+            actions.textContent = "Admin access required";
+        }
         row.appendChild(actions);
         tbody.appendChild(row);
     });
@@ -92,6 +161,7 @@ function editStudent(id) {
 }
 
 async function deleteStudent(id) {
+    if (!ensureAuth()) return;
     if (!confirm("Delete this student registration?")) return;
     try {
         await request(`/students/${id}`, { method: "DELETE" });
@@ -108,6 +178,7 @@ async function validateForm() {
         showToast("Enter a name, valid email, age 18 or older, and course.", "danger");
         return;
     }
+    if (!ensureAuth()) return;
     try {
         const saved = await request(editId ? `/students/${editId}` : "/students", { method: editId ? "PUT" : "POST", body: JSON.stringify(student) });
         students = editId ? students.map((item) => item.id === saved.id ? saved : item) : [...students, saved];
@@ -116,14 +187,66 @@ async function validateForm() {
     } catch (error) { showToast(error.message, "danger"); }
 }
 
-async function addCourse() {
-    const name = prompt("New course name:");
-    if (!name?.trim()) return;
+function resetCourseForm() {
+    courseEditId = null;
+    $("courseForm").reset();
+    $("courseFormTitle").textContent = "Create a new course";
+    $("saveCourse").textContent = "Add Course";
+    $("cancelCourseEdit").classList.add("d-none");
+}
+
+function editCourse(id) {
+    if (!ensureAuth()) return;
+    const course = catalog.find((item) => item.id === id);
+    if (!course) return;
+    courseEditId = id;
+    $("courseName").value = course.name;
+    $("courseDescription").value = course.desc;
+    $("courseFormTitle").textContent = "Edit course";
+    $("saveCourse").textContent = "Save Changes";
+    $("cancelCourseEdit").classList.remove("d-none");
+    $("courseManager").scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+async function saveCourse(event) {
+    event.preventDefault();
+    if (!ensureAuth()) return;
+    const course = { name: $("courseName").value.trim(), desc: $("courseDescription").value.trim() };
+    if (!course.name || !course.desc) {
+        showToast("Enter both a course name and description.", "danger");
+        return;
+    }
     try {
-        catalog.push(await request("/courses", { method: "POST", body: JSON.stringify({ name }) }));
+        const saved = await request(courseEditId ? `/courses/${courseEditId}` : "/courses", {
+            method: courseEditId ? "PUT" : "POST",
+            body: JSON.stringify(course)
+        });
+        catalog = courseEditId ? catalog.map((item) => item.id === saved.id ? saved : item) : [...catalog, saved];
         renderCatalog();
-        $("dashboardHint").textContent = `${name.trim()} added to the catalog.`;
+        $("dashboardHint").textContent = `${saved.name} ${courseEditId ? "updated" : "added"}.`;
+        showToast(`Course ${courseEditId ? "updated" : "added"}.`, "success");
+        resetCourseForm();
     } catch (error) { showToast(error.message, "danger"); }
+}
+
+async function deleteCourse(id) {
+    if (!ensureAuth()) return;
+    const course = catalog.find((item) => item.id === id);
+    if (!course || !confirm(`Delete ${course.name}?`)) return;
+    try {
+        await request(`/courses/${id}`, { method: "DELETE" });
+        catalog = catalog.filter((item) => item.id !== id);
+        renderCatalog();
+        if (courseEditId === id) resetCourseForm();
+        $("dashboardHint").textContent = `${course.name} removed from the catalog.`;
+        showToast("Course deleted.", "success");
+    } catch (error) { showToast(error.message, "danger"); }
+}
+
+function openCourseManager() {
+    if (!ensureAuth()) return;
+    resetCourseForm();
+    $("courseManager").scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
 function applyTheme(isDark) {
@@ -132,17 +255,31 @@ function applyTheme(isDark) {
     $("themebtn").textContent = isDark ? "Light Mode" : "Dark Mode";
 }
 
-function learnMoreAboutCourse(courseName) {
+function showCourseDetails(course) {
+    $("courseModalTitle").textContent = course.name;
+    $("courseModalDescription").textContent = course.desc;
+    $("enrollCourseNow").onclick = () => enrollInCourse(course.name);
+    $("courseDetailsModal").classList.add("is-open");
+    $("courseDetailsModal").setAttribute("aria-hidden", "false");
+}
+
+function closeCourseDetails() {
+    $("courseDetailsModal").classList.remove("is-open");
+    $("courseDetailsModal").setAttribute("aria-hidden", "true");
+}
+
+function enrollInCourse(courseName) {
+    closeCourseDetails();
     $("course").value = courseName;
     $("register").scrollIntoView({ behavior: "smooth" });
-    showToast(`${courseName} selected. Complete the form to register.`, "info");
+    showToast(`${courseName} selected. Complete the form to enroll.`, "info");
 }
 
 async function initialise() {
     $("date").textContent = new Date().toDateString();
     try {
         [students, catalog] = await Promise.all([request("/students"), request("/courses")]);
-        renderCatalog(); renderStudents(); renderDashboard();
+        renderAuthUI(); renderDashboard();
     } catch (error) {
         showToast("Could not connect to SkillHub. Start the backend and open http://localhost:3000.", "danger");
     }
@@ -150,7 +287,13 @@ async function initialise() {
 
 $("getstarted").onclick = () => $("register").scrollIntoView({ behavior: "smooth" });
 $("learnmore").onclick = () => $("courses").scrollIntoView({ behavior: "smooth" });
-$("addCourse").onclick = addCourse;
+$("addCourse").onclick = openCourseManager;
+$("courseForm").onsubmit = saveCourse;
+$("cancelCourseEdit").onclick = resetCourseForm;
+document.querySelectorAll("[data-close-course-modal]").forEach((element) => element.onclick = closeCourseDetails);
+document.querySelectorAll("[data-close-auth-modal]").forEach((element) => element.onclick = closeAuthModal);
+$("authForm").onsubmit = submitAuth;
+$("authButton").onclick = toggleAuthentication;
 $("searchBox").oninput = renderStudents;
 function toggleTheme() {
     const next = !document.body.classList.contains("dark-mode");

@@ -3,364 +3,140 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Anjali Singla - Portfolio</title>
+  <meta name="description" content="Portfolio of Anjali Singla, a BCA student and aspiring full-stack developer.">
+  <title>Anjali Singla | Portfolio</title>
   <style>
-    body.dark-mode {
-      --bg-color: #121212;
-      --text-color: #f4f4f4;
-      --card-bg: #1e1e1e;
-      --header-bg: #000;
-      --nav-bg: #222;
-    }
-
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(-45deg, #fbc2eb, #a6c1ee, #fad0c4, #a1c4fd);
-      background-size: 400% 400%;
-      animation: gradientShift 15s ease infinite;
-      color: var(--text-color);
-      transition: background 0.5s ease, color 0.5s ease;
-    }
-
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    header {
-      background: var(--header-bg);
-      color: #ffffff;
-      padding: 30px;
-      text-align: center;
-      background-color: #880e4f;
-    }
-
-    nav{
-      align-content:center;
-    }
-    nav ul {
-      list-style: none;
-      padding: 0;
-      display: flex;
-      justify-content: space-around;
-      background: var(--nav-bg);
-      margin: 0;
-     
-    }
-
-    nav ul li {
-      margin: 0 15px;
-      padding: 10px;
-      border-radius: 5px;
-      border-color: #000;
-      background-color: #2e262a;
-      justify-content: space-between;
-    }
-
-    nav ul li a {
-      color: #fff;
-      text-decoration: none;
-      font-weight: bold;
-      transition: color 0.3s ease;
-    }
-
-    nav ul li a:hover {
-      color: #ff9800;
-    }
-
-    section {
-      padding: 40px;
-      max-width: 90%;
-      margin: auto;
-      background-color: #22222232;
-    }
-
-    h2 {
-      color: #880e4f;
-      text-align: center;
-      margin-bottom: 20px;
-      background-color: #222;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: auto;
-    }
-
-    table, th, td {
-      border: 1px solid purple;
-      padding: 8px;
-      text-align: center;
-      font-size: 16px;
-    }
-
-    th {
-      background-color: purple;
-      color: white;
-    }
-
-    ul {
-      max-width: 600px;
-      margin: auto;
-      text-align: left;
-    }
-
-    .projects {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-    }
-
-    .card {
-      background: var(--card-bg);
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-      transition: transform 0.3s ease;
-    }
-
-    .card:hover {
-      transform: scale(1.05);
-    }
-
-    .card-image img {
-      width: 100%;
-      height: 150px;
-      object-fit: cover;
-      transition: transform 0.5s ease, filter 0.5s ease;
-    }
-
-    .card:hover .card-image img {
-      transform: scale(1.1);
-      filter: brightness(80%);
-    }
-
-    .card-content {
-      padding: 15px;
-    }
-
-    footer {
-      background: var(--header-bg);
-      color: #fff;
-      text-align: center;
-      padding: 15px;
-      margin-top: 30px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    footer::before {
-      content: "";
-      position: absolute;
-      top: -50px;
-      left: 0;
-      width: 200%;
-      height: 150px;
-      background: url('wave.svg') repeat-x;
-      background-size: cover;
-      animation: waveMove 10s linear infinite;
-    }
-
-    @keyframes waveMove {
-      from { transform: translateX(0); }
-      to { transform: translateX(-50%); }
-    }
-
-    button {
-      background: purple;
-      color: white;
-      border: none;
-      padding: 8px 12px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    button:hover {
-      background: #880e4f;
-    }
-
-    .toggle-container {
-      text-align: center;
-      margin: 20px;
-    }
-
-    form {
-      max-width: 500px;
-      margin: auto;
-      text-align: left;
-    }
-
-    input, textarea {
-      width: 100%;
-      padding: 8px;
-      margin: 5px 0;
-      border: 1px solid #000000;
-      border-radius: 15px;
-    }
+    :root { --bg:#f7f8fc; --surface:#fff; --ink:#17213d; --muted:#66718a; --primary:#5b4bdb; --accent:#13a99a; --line:#e6e9f2; --shadow:0 18px 45px rgba(32,43,84,.10); }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; color:var(--ink); background:var(--bg); font:16px/1.65 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif; }
+    a { color:inherit; }
+    .container { width:min(1120px,calc(100% - 2.5rem)); margin:auto; }
+    .nav { position:sticky; top:0; z-index:10; background:rgba(247,248,252,.88); border-bottom:1px solid var(--line); backdrop-filter:blur(14px); }
+    .nav-inner { min-height:72px; display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+    .brand { text-decoration:none; font-size:1.2rem; font-weight:850; letter-spacing:-.04em; }
+    .brand span { color:var(--primary); }
+    .nav-links { display:flex; gap:1.2rem; list-style:none; padding:0; margin:0; color:var(--muted); font-size:.92rem; font-weight:700; }
+    .nav-links a { text-decoration:none; }
+    .nav-links a:hover { color:var(--primary); }
+    button,.button { border:0; border-radius:.7rem; padding:.7rem 1.05rem; font:inherit; font-weight:750; cursor:pointer; transition:.2s ease; }
+    button:hover,.button:hover { transform:translateY(-2px); box-shadow:0 9px 20px rgba(63,54,152,.18); }
+    .theme-button { background:var(--surface); border:1px solid var(--line); color:var(--ink); }
+    .hero { overflow:hidden; position:relative; padding:6.8rem 0 5rem; background:radial-gradient(circle at 82% 25%,#dedbff 0,transparent 23%),linear-gradient(135deg,#f7f8fc 45%,#eef0ff); }
+    .hero::after { content:""; position:absolute; right:-8rem; bottom:-12rem; width:27rem; height:27rem; border:40px solid rgba(19,169,154,.11); border-radius:50%; }
+    .hero-content { position:relative; z-index:1; max-width:760px; }
+    .eyebrow { color:var(--primary); font-size:.76rem; letter-spacing:.12em; text-transform:uppercase; font-weight:850; }
+    h1,h2,h3,p { margin-top:0; }
+    h1 { max-width:11ch; margin:.65rem 0 1.15rem; font-size:clamp(2.7rem,6vw,5.2rem); line-height:1; letter-spacing:-.065em; }
+    h1 em { color:var(--primary); font-style:normal; }
+    .hero p { max-width:620px; color:var(--muted); font-size:1.12rem; }
+    .actions { display:flex; flex-wrap:wrap; gap:.75rem; margin-top:1.7rem; }
+    .primary { background:var(--primary); color:#fff; text-decoration:none; }
+    .secondary { background:var(--surface); color:var(--ink); border:1px solid var(--line); text-decoration:none; }
+    .quick-stats { display:flex; flex-wrap:wrap; gap:2rem; margin-top:3.7rem; }
+    .quick-stats strong { display:block; font-size:1.35rem; color:var(--primary); }
+    .quick-stats span { color:var(--muted); font-size:.88rem; }
+    section { padding:5.4rem 0; }
+    .section-heading { max-width:650px; margin-bottom:2.4rem; }
+    h2 { margin:.45rem 0 .65rem; font-size:clamp(1.9rem,3vw,2.65rem); line-height:1.1; letter-spacing:-.045em; }
+    .section-heading p,.about-copy { color:var(--muted); }
+    .split { display:grid; grid-template-columns:1.05fr .95fr; gap:4rem; align-items:start; }
+    .info-card { background:var(--surface); border:1px solid var(--line); border-radius:1rem; padding:1.5rem; box-shadow:var(--shadow); }
+    .info-card dl { display:grid; grid-template-columns:auto 1fr; gap:.75rem 1rem; margin:0; }
+    .info-card dt { color:var(--muted); }
+    .info-card dd { margin:0; font-weight:750; }
+    .skills { display:flex; flex-wrap:wrap; gap:.65rem; margin-top:1.5rem; }
+    .skill { border:1px solid var(--line); color:var(--primary); background:var(--surface); border-radius:999px; padding:.4rem .75rem; font-size:.86rem; font-weight:700; }
+    .timeline { border-left:2px solid #dcdaf9; margin-left:.55rem; padding-left:1.5rem; }
+    .timeline-item { position:relative; padding:0 0 1.7rem; }
+    .timeline-item::before { content:""; position:absolute; width:.7rem; height:.7rem; border:3px solid var(--primary); border-radius:50%; background:var(--bg); left:-1.94rem; top:.35rem; }
+    .timeline-item p { color:var(--muted); margin:.25rem 0 0; }
+    .projects-section { background:#eef0fb; }
+    .filters { display:flex; flex-wrap:wrap; gap:.6rem; margin-bottom:1.6rem; }
+    .filter { background:transparent; border:1px solid var(--line); color:var(--muted); }
+    .filter.active { background:var(--primary); color:#fff; border-color:var(--primary); }
+    .project-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.3rem; }
+    .project { overflow:hidden; background:var(--surface); border:1px solid var(--line); border-radius:1rem; box-shadow:0 8px 25px rgba(39,48,84,.07); transition:.25s ease; }
+    .project:hover { transform:translateY(-7px); box-shadow:var(--shadow); }
+    .project.hidden { display:none; }
+    .project img { display:block; width:100%; height:170px; object-fit:cover; background:#dce1f5; }
+    .project-content { padding:1.3rem; }
+    .project-type { color:var(--accent); font-size:.75rem; text-transform:uppercase; font-weight:850; letter-spacing:.08em; }
+    .project h3 { margin:.35rem 0; font-size:1.15rem; }
+    .project p { min-height:3.4rem; color:var(--muted); font-size:.92rem; }
+    .project button { padding:0; background:transparent; color:var(--primary); box-shadow:none; }
+    .contact-wrap { display:grid; grid-template-columns:.85fr 1.15fr; gap:3rem; }
+    .contact-links { display:grid; gap:.8rem; }
+    .contact-links a,.contact-phone { padding:1rem; background:var(--surface); border:1px solid var(--line); border-radius:.75rem; text-decoration:none; font-weight:700; }
+    .contact-form { display:grid; gap:1rem; background:var(--surface); border:1px solid var(--line); border-radius:1rem; padding:1.7rem; box-shadow:var(--shadow); }
+    label { font-weight:750; font-size:.9rem; }
+    input,textarea { width:100%; margin-top:.35rem; padding:.78rem .85rem; color:var(--ink); background:var(--bg); border:1px solid var(--line); border-radius:.65rem; font:inherit; }
+    input:focus,textarea:focus { outline:3px solid rgba(91,75,219,.15); border-color:var(--primary); }
+    .form-message { min-height:1.5em; margin:0; color:var(--accent); font-weight:700; }
+    footer { padding:2rem 0; border-top:1px solid var(--line); color:var(--muted); text-align:center; }
+    .modal { display:none; position:fixed; inset:0; z-index:20; align-items:center; justify-content:center; padding:1.2rem; }
+    .modal.open { display:flex; }
+    .modal-backdrop { position:absolute; inset:0; background:rgba(11,17,40,.7); backdrop-filter:blur(4px); }
+    .modal-content { position:relative; width:min(100%,500px); background:var(--surface); border-radius:1rem; padding:2rem; box-shadow:0 25px 70px rgba(0,0,0,.28); }
+    .modal-close { position:absolute; right:.8rem; top:.7rem; padding:.1rem .55rem; background:transparent; color:var(--ink); font-size:1.5rem; box-shadow:none; }
+    body.dark { --bg:#101629; --surface:#17213a; --ink:#eff3ff; --muted:#afbbd6; --line:#2c3857; --shadow:0 18px 45px rgba(0,0,0,.2); }
+    body.dark .nav { background:rgba(16,22,41,.88); }
+    body.dark .hero { background:radial-gradient(circle at 82% 25%,#29275d 0,transparent 24%),linear-gradient(135deg,#101629 45%,#161d39); }
+    body.dark .projects-section { background:#121a30; }
+    @media (max-width:820px) { .nav-links { display:none; } .split,.contact-wrap { grid-template-columns:1fr; gap:2rem; } .project-grid { grid-template-columns:repeat(2,1fr); } }
+    @media (max-width:540px) { .container { width:min(100% - 2rem,1120px); } .hero { padding:5rem 0 4rem; } .project-grid { grid-template-columns:1fr; } .quick-stats { gap:1.2rem; } section { padding:4rem 0; } }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Welcome to My Portfolio</h1>
-    <p>Hello! My name is <b>Anjali Singla</b>.  I am a final year BCA student who is passionate to learn more about Full Stack Developer.</p>
-  </header>
+  <nav class="nav"><div class="container nav-inner"><a class="brand" href="#top">Anjali<span>.</span></a><ul class="nav-links"><li><a href="#about">About</a></li><li><a href="#education">Education</a></li><li><a href="#projects">Projects</a></li><li><a href="#contact">Contact</a></li></ul><button id="themeToggle" class="theme-button" type="button">Dark mode</button></div></nav>
 
-  <nav>
-    <ul>
-      <li><a href="#about">About</a></li>
-      <li><a href="#education">Education</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
+  <main id="top">
+    <section class="hero"><div class="container hero-content"><p class="eyebrow">BCA student · aspiring full-stack developer</p><h1>Building useful, <em>human</em> digital experiences.</h1><p>Hello, I’m Anjali Singla. I enjoy turning ideas into responsive web experiences and continuously growing my frontend and backend skills.</p><div class="actions"><a class="button primary" href="#projects">View projects</a><a class="button secondary" href="#contact">Contact me</a></div><div class="quick-stats"><div><strong>5+</strong><span>Projects built</span></div><div><strong>2027</strong><span>Expected graduation</span></div><div><strong>8+</strong><span>Technical skills</span></div></div></div></section>
 
-  <div class="toggle-container">
-    <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
-  </div>
+    <section id="about"><div class="container split"><div><p class="eyebrow">About me</p><h2>Curious, practical, and always learning.</h2><p class="about-copy">I am a final-year BCA student with a strong interest in full-stack development. I enjoy designing accessible interfaces, writing interactive JavaScript, and learning how backend systems turn an idea into a complete application.</p><div class="skills"><span class="skill">HTML & CSS</span><span class="skill">JavaScript</span><span class="skill">Python</span><span class="skill">C / C++</span><span class="skill">WordPress</span><span class="skill">Canva</span><span class="skill">Photoshop</span><span class="skill">AI Basics</span></div></div><aside class="info-card"><dl><dt>Focus</dt><dd>Full-stack web development</dd><dt>Currently learning</dt><dd>Practical projects & APIs</dd><dt>Based in</dt><dd>Punjab, India</dd><dt>Available for</dt><dd>Learning opportunities</dd></dl></aside></div></section>
 
-  <section id="about">
-    <h2>About Me</h2>
-    <p>
-      I am a final year BCA student who is passionate to learn more about Full Stack Developer with a strong interest in building dynamic and user-friendly web applications.
-      I enjoy working on both front-end and back-end development, creating responsive designs, and developing efficient server-side solutions.
-      I am always eager to learn new technologies and improve my skills to build complete and impactful web solutions.
-    </p>
-  </section>
+    <section id="education" class="projects-section"><div class="container"><div class="section-heading"><p class="eyebrow">Education</p><h2>My academic path</h2><p>A foundation in computer applications, supported by hands-on learning.</p></div><div class="timeline"><div class="timeline-item"><strong>Gian Jyoti Institute of Management and Technology</strong><p>Bachelor’s Degree · Expected 2027</p></div><div class="timeline-item"><strong>Lawrence Public Senior Secondary School</strong><p>School · 2024</p></div><div class="timeline-item"><strong>Manav Mangal Smart School</strong><p>School · 2022</p></div></div></div></section>
 
-  <section id="education">
-    <h2>Educational Qualifications</h2>
-    <table>
-      <tr>
-        <th>Qualification</th>
-        <th>Institution</th>
-        <th>Year</th>
-      </tr>
-      <tr>
-        <td>School</td>
-        <td>Manav Mangal Smart School</td>
-        <td>2022</td>
-      </tr>
-      <tr>
-        <td>School</td>
-        <td>Lawerance Public Sn. Sec. School</td>
-        <td>2024</td>
-      </tr>
-      <tr>
-        <td>Bachelor's Degree</td>
-        <td>Gian Jyoti Institute of Management and Technology</td>
-        <td>2027</td>
-      </tr>
-    </table>
-  </section>
+    <section id="projects" class="projects-section"><div class="container"><div class="section-heading"><p class="eyebrow">Portfolio</p><h2>Projects I have built and am developing</h2><p>Use the filters to explore completed work and current ideas.</p></div><div class="filters" aria-label="Project filters"><button class="filter active" data-filter="all">All</button><button class="filter" data-filter="completed">Completed</button><button class="filter" data-filter="ongoing">Ongoing</button></div><div class="project-grid">
+      <article class="project" data-category="completed" data-title="Simple Calculator" data-description="A beginner-friendly calculator that uses JavaScript events and basic arithmetic logic to perform calculations."><img src="images/simple_calculator.png" alt="Simple Calculator project"><div class="project-content"><span class="project-type">Completed · JavaScript</span><h3>Simple Calculator</h3><p>A responsive calculator built with HTML, CSS, and JavaScript.</p><button class="project-details">View details →</button></div></article>
+      <article class="project" data-category="completed" data-title="Student Management System" data-description="A student-record management project focused on organising student information and performance data."><img src="images/SMS.png" alt="Student Management System project"><div class="project-content"><span class="project-type">Completed · Web app</span><h3>Student Management System</h3><p>A system to manage student records and performance.</p><button class="project-details">View details →</button></div></article>
+      <article class="project" data-category="completed" data-title="Skill Swap Platform" data-description="A platform concept that helps people exchange skills, connect with learners, and grow together."><img src="images/Screenshot 2026-06-28 195858.png" alt="Skill Swap Platform project"><div class="project-content"><span class="project-type">Completed · Community</span><h3>Skill Swap Platform</h3><p>A website for exchanging skills and learning from others.</p><button class="project-details">View details →</button></div></article>
+      <article class="project" data-category="ongoing" data-title="SkillUp" data-description="An ongoing learning platform designed to create better learning opportunities and a smoother learner experience."><img src="images/skillup.png" alt="SkillUp project"><div class="project-content"><span class="project-type">Ongoing · Learning</span><h3>SkillUp</h3><p>A platform in development to improve learning opportunities.</p><button class="project-details">View details →</button></div></article>
+      <article class="project" data-category="ongoing" data-title="AI Bot for Trading" data-description="An exploratory project that uses AI concepts to assist with trading-related decisions."><img src="images/AI_BOT.png" alt="AI Bot for Trading project"><div class="project-content"><span class="project-type">Ongoing · AI</span><h3>AI Bot for Trading</h3><p>An AI-powered bot concept for trading assistance.</p><button class="project-details">View details →</button></div></article>
+    </div></div></section>
 
-  <section id="skills">
-    <h2>Skills</h2>
-    <ul>
-      <li>HTML, CSS, JavaScript</li>
-      <li>Python, C, C++</li>
-      <li>WordPress</li>
-      <li>MS Office</li>
-      <li>Adobe Photoshop, Canva</li>
-      <li>AI Basics</li>
-      <li>Android Application Development Basics</li>
-      <li>Communication Skills</li>
-    </ul>
-  </section>
+    <section id="contact"><div class="container contact-wrap"><div><p class="eyebrow">Get in touch</p><h2>Let’s start a conversation.</h2><p class="about-copy">I’m open to learning opportunities, project discussions, and constructive feedback.</p><div class="contact-links"><a href="mailto:anjalisingla.gjimt@gmail.com">Email: anjalisingla.gjimt@gmail.com</a><div class="contact-phone">Phone: 9779106018</div></div></div><form id="contactForm" class="contact-form"><div><label for="visitorName">Name</label><input id="visitorName" required placeholder="Your name"></div><div><label for="visitorEmail">Email</label><input id="visitorEmail" type="email" required placeholder="you@example.com"></div><div><label for="visitorMessage">Message</label><textarea id="visitorMessage" rows="4" required placeholder="Write your message"></textarea></div><button class="primary" type="submit">Send message</button><p id="formMessage" class="form-message" aria-live="polite"></p></form></div></section>
+  </main>
 
-  <section id="projects">
-    <h2>Completed Projects</h2>
-    <div class="projects">
-      <div class="card">
-        <div class="card-image">
-          <img src="images/simple_calculator.png" alt="Calculator Project">
-        </div>
-        <div class="card-content">
-          <h3>Simple Calculator</h3>
-          <p>A basic calculator built with HTML, CSS, and JavaScript.</p>
-          <button onclick="showAlert('Simple Calculator')">View Project</button>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-image">
-          <img src="images/SMS.png" alt="Student Management System">
-        </div>
-        <div class="card-content">
-          <h3>Student Management System</h3>
-          <p>A system to manage student records and performance.</p>
-          <button onclick="showAlert('Student Management System')">View Project</button>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-image">
-          <img src="images/Screenshot 2026-06-28 195858.png" alt="Skill Swap Platform">
-        </div>
-        <div class="card-content">
-          <h3>Skill Swap Platform</h3>
-          <p>A website that allows users to exchange skills and learn from each other.</p>
-          <button onclick="showAlert('Skill Swap Platform')">View Project</button>
-        </div>
-      </div>
-      </div>
-      <h2>Ongoing Projects</h2>
-      <div class="projects">
-          <div class="card">
-        <div class="card-image">
-          <img src="images/skillup.png" alt="SkillUp Project">
-        </div>
-        <div class="card-content">
-          <h3>SkillUp</h3>
-          <p>An innovative platform currently in development to enhance learning opportunities.</p>
-          <button onclick="showAlert('SkillUp')">View Project</button>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-image">
-          <img src="images/AI_BOT.png" alt="AI Bot for Trading">
-        </div>
-        <div class="card-content">
-          <h3>AI Bot for Trading</h3>
-          <p>A simple AI-powered bot designed to assist with trading decisions.</p>
-          <button onclick="showAlert('AI Bot for Trading')">View Project</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="contact">
-    <h2>Contact Me</h2>
-    <p>Email: anjalisingla.gjimt@gmail.com</p>
-    <p>Phone: 9779******</p>
-  </section>
-  <section>
-    <h2>Send Me a Message</h2>
-    <form>
-      <label>Name:</label><br>
-      <input type="text" name="name"><br><br>
-      <label>Email:</label><br>
-      <input type="email" name="email"><br><br>
-      <label>Message:</label><br>
-      <textarea rows="4" cols="30"></textarea><br><br>
-      <input type="submit" value="Submit">
-    </form>
-  </section>
-
-  <footer>
-    <p>&copy; 2026 Anjali Singla. All rights reserved.</p>
-  </footer>
+  <footer><div class="container">© <span id="year"></span> Anjali Singla. Built with curiosity and care.</div></footer>
+  <div id="projectModal" class="modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-backdrop" data-close-modal></div><div class="modal-content"><button class="modal-close" type="button" aria-label="Close" data-close-modal>×</button><p class="eyebrow">Project overview</p><h2 id="modalTitle"></h2><p id="modalDescription" class="about-copy"></p></div></div>
 
   <script>
-    function toggleDarkMode() {
-      document.body.classList.toggle("dark-mode");
-    }
-    function showAlert(projectName) {
-      alert("You clicked on " + projectName + "!");
-    }
+    const body = document.body;
+    const themeToggle = document.getElementById('themeToggle');
+    const setTheme = (dark) => { body.classList.toggle('dark', dark); themeToggle.textContent = dark ? 'Light mode' : 'Dark mode'; localStorage.setItem('portfolioTheme', dark ? 'dark' : 'light'); };
+    setTheme(localStorage.getItem('portfolioTheme') === 'dark');
+    themeToggle.addEventListener('click', () => setTheme(!body.classList.contains('dark')));
+
+    document.querySelectorAll('.filter').forEach((button) => button.addEventListener('click', () => {
+      document.querySelectorAll('.filter').forEach((item) => item.classList.remove('active'));
+      button.classList.add('active');
+      document.querySelectorAll('.project').forEach((project) => project.classList.toggle('hidden', button.dataset.filter !== 'all' && project.dataset.category !== button.dataset.filter));
+    }));
+
+    const modal = document.getElementById('projectModal');
+    const closeModal = () => { modal.classList.remove('open'); modal.setAttribute('aria-hidden', 'true'); };
+    document.querySelectorAll('.project-details').forEach((button) => button.addEventListener('click', () => {
+      const project = button.closest('.project');
+      document.getElementById('modalTitle').textContent = project.dataset.title;
+      document.getElementById('modalDescription').textContent = project.dataset.description;
+      modal.classList.add('open'); modal.setAttribute('aria-hidden', 'false');
+    }));
+    document.querySelectorAll('[data-close-modal]').forEach((button) => button.addEventListener('click', closeModal));
+    document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeModal(); });
+
+    document.getElementById('contactForm').addEventListener('submit', (event) => { event.preventDefault(); document.getElementById('formMessage').textContent = 'Thank you! Your message is ready to be sent.'; event.currentTarget.reset(); });
+    document.getElementById('year').textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
